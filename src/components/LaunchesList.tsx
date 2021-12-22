@@ -22,20 +22,20 @@ const LaunchesList: FC<LaunchListProps> = ({data, error, loading, selected, setS
     }
     // @ts-ignore
     const launches_list = data.launches.map(launch => launch.mission_name);
-    const secondLaunchListMissionName = launches_list[1];
+    // const secondLaunchListMissionName = launches_list[0];
     const length = launches_list.length;
-    // useEffect(() => {
     // @ts-ignore
-    setSelected(secondLaunchListMissionName);
-    // }, [launches_list, setSelected])
+    // setSelected(secondLaunchListMissionName);
     return (
         <div>
             <Stack justifyContent={"flex-end"}>
                 {launches_list.map((launch, index) => (
                     <LaunchItem
+                        key={launch}
                         mission_name={launch}
                         divider={index < length - 1}
                         selected={launch === selected}
+                        setSelected={setSelected}
                     />
                 ))}
             </Stack>

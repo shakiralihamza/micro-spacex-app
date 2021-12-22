@@ -1,0 +1,40 @@
+name: Testing And Deploying
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run the tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Install Surge
+        run: npm install --global surge
+
+      - name: Deploy to Surge
+        run: surge ./build https://project-8-microspacexapp.surge.sh --token ${{ secrets.SURGE_SECRET }}

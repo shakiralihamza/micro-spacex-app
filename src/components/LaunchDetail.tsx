@@ -4,10 +4,23 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import LinkIcon from '@mui/icons-material/Link';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import LaunchDetailLink from "./LaunchDetailLink";
-// noinspection ES6PreferShortImport
-import {LinkType} from "../react-app-env.d";
+import LaunchVideo from "./LaunchVideo";
+import LaunchImages from "./LaunchImages";
+
+const images: string[] = [
+    'https://farm9.staticflickr.com/8617/16789019815_f99a165dc5_o.jpg',
+    'https://farm9.staticflickr.com/8617/16789019815_f99a165dc5_o.jpg',
+    'https://farm9.staticflickr.com/8617/16789019815_f99a165dc5_o.jpg',
+];
 
 function LaunchDetail() {
+    const [videoOpen, setVideoOpen] = React.useState(false);
+    const [imagesOpen, setImagesOpen] = React.useState(false);
+    const link: string = 'https://en.wikipedia.org/wiki/Thaicom_6';
+    const handleVideo = () => setVideoOpen(true);
+
+    const handleImages = () => setImagesOpen(true);
+
     return (
         <div>
             <Typography variant={"overline"} fontWeight={500}>
@@ -18,7 +31,7 @@ function LaunchDetail() {
                 <Box component={'span'} sx={{fontWeight: 100}}>SpX CRS 18</Box>
             </Typography>
             <Stack direction="row" spacing={1} mb={2}>
-                <Chip label="Success" />
+                <Chip label="Success"/>
             </Stack>
             <Typography variant={'body2'} gutterBottom fontSize={14}>
                 <Box component={'span'} sx={{fontWeight: 700}}>Launch Time: </Box>
@@ -37,12 +50,20 @@ function LaunchDetail() {
                 hac habitasse platea dictumst.
             </Typography>
             <Stack direction={'row'} spacing={5}>
-                <LaunchDetailLink icon={<PlayArrowIcon fontSize={"small"}/>} text={'Watch Video'} type={LinkType.video}/>
-                <LaunchDetailLink icon={<ImageOutlinedIcon fontSize={"small"}/>} text={'View Images'} type={LinkType.images}/>
-                <LaunchDetailLink icon={<LinkIcon fontSize={"small"}/>} text={'Wikipedia'} type={LinkType.wikipedia}/>
-
+                <Box onClick={handleVideo}>
+                    <LaunchDetailLink icon={<PlayArrowIcon fontSize={"small"}/>} text={'Watch Video'}/>
+                </Box>
+                <Box onClick={handleImages}>
+                    <LaunchDetailLink icon={<ImageOutlinedIcon fontSize={"small"}/>} text={'View Images'}/>
+                </Box>
+                <Box onClick={() => window.open(link, '_blank')}>
+                    <LaunchDetailLink icon={<LinkIcon fontSize={"small"}/>} text={'Wikipedia'}/>
+                </Box>
             </Stack>
 
+
+            <LaunchVideo open={videoOpen} setOpen={setVideoOpen} url={'https://youtu.be/L4sbDxR22z4'}/>
+            <LaunchImages open={imagesOpen} setOpen={setImagesOpen} images={images}/>
         </div>
     );
 }

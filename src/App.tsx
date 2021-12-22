@@ -31,16 +31,31 @@ export const QUERY_LAUNCH_LIST = gql`
 `;
 
 function App() {
-    const { data, error, loading } = useLaunchListQuery();
+    const {data, error, loading} = useLaunchListQuery();
     const [selected, setSelected] = useState<string | null | undefined>(null);
 
     return (
         <>
             <CssBaseline/>
             <Container maxWidth={"md"} sx={{height: '100vh'}}>
-                <Grid container sx={{width: '100%', height:'100%'}} alignItems={"center"} justifyContent={"center"}>
+                <Grid container sx={{width: '100%', height: '100%'}} alignItems={"center"} justifyContent={"center"}>
                     <Grid item xs={"auto"} sx={{backgroundColor: 'inherit', margin: '0 20px'}}>
-                        <LaunchesList data={data} error={error} loading={loading} selected={selected} setSelected={setSelected}/>
+                        {
+                            loading ?
+                                <p>loading...</p>
+                                : null
+                        }
+                        {
+                            error ?
+                                <p>error</p>
+                                : null
+                        }
+                        {
+                            data ?
+                                <LaunchesList data={data} selected={selected}
+                                              setSelected={setSelected}/>
+                                : null
+                        }
                     </Grid>
                     <Grid item xs={8} sx={{backgroundColor: 'inherit', margin: '0 0 0 80px'}}>
                         <LaunchDetail data={data} selected={selected}/>

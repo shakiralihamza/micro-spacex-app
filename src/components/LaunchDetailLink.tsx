@@ -1,18 +1,20 @@
 import React, {FC} from 'react';
-import {Box, IconButton, Typography} from "@mui/material";
+import {Box, IconButton, Theme, Typography, useMediaQuery, useTheme} from "@mui/material";
 
 type LinkProps = {
     icon: JSX.Element
     text: string
 }
 const LaunchDetailLink: FC<LinkProps> = ({icon, text}) => {
+    const theme: Theme = useTheme();
+    const isSmallerThanMD = useMediaQuery(theme.breakpoints.down('md'))
     return (
         <>
             <Box sx={{
                 '&: hover': {
                     cursor: 'pointer',
                 },
-                '&: hover .theIcon':{
+                '&: hover .theIcon': {
                     backgroundColor: 'rgba(236,236,236,0.64)'
                 }
             }}
@@ -27,7 +29,9 @@ const LaunchDetailLink: FC<LinkProps> = ({icon, text}) => {
                 >
                     {icon}
                 </IconButton>
-                <Typography ml={1} variant={'body2'} fontSize={12} fontWeight={500} component={'span'}>
+                <Typography ml={1} variant={'body2'} fontSize={12} fontWeight={500} component={'span'}
+                            sx={{...(isSmallerThanMD && {display: 'none'})}}
+                >
                     {text}
                 </Typography>
             </Box>

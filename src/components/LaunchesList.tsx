@@ -19,6 +19,7 @@ const LaunchesList: FC<LaunchListProps> = ({data, selected, setSelected}) => {
     }, []);
 
     const length = launches_list.length;
+
     return (
         <div>
             <Stack justifyContent={"flex-end"}>

@@ -8,13 +8,22 @@ type LinkProps = {
 const LaunchDetailLink: FC<LinkProps> = ({icon, text}) => {
     return (
         <>
-            <Box sx={{'&: hover': {cursor: 'pointer'}}}>
+            <Box sx={{
+                '&: hover': {
+                    cursor: 'pointer',
+                },
+                '&: hover .theIcon':{
+                    backgroundColor: 'rgba(236,236,236,0.64)'
+                }
+            }}
+            >
                 <IconButton aria-label="play" disableRipple
                             sx={{
                                 border: '1px solid',
                                 borderColor: '#e1e1e1',
-                                color: 'text.primary'
+                                color: 'text.primary',
                             }}
+                            className={'theIcon'}
                 >
                     {icon}
                 </IconButton>

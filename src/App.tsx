@@ -18,6 +18,7 @@ import {gql} from "@apollo/client";
 import {useLaunchListQuery} from "./generated/graphql";
 import MenuIcon from '@mui/icons-material/Menu';
 
+
 export const QUERY_LAUNCH_LIST = gql`
     query LaunchList {
         launches(limit: 5) {

@@ -10,7 +10,7 @@ import {LaunchListQuery} from "../generated/graphql";
 
 type LaunchDetailProps = {
     data: LaunchListQuery | undefined
-    selected: string | null | undefined
+    selected: number
 }
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -42,12 +42,12 @@ const LaunchDetail: FC<LaunchDetailProps> = ({data, selected}) => {
     const [videoOpen, setVideoOpen] = React.useState(false);
     const [imagesOpen, setImagesOpen] = React.useState(false);
 
-    if (selected === null || selected === undefined) {
+    if (selected === -1) {
         return null
     }
 
     // @ts-ignore
-    const launchDetail: any = data.launches.filter(launch => launch.mission_name === selected)[0];
+    const launchDetail: any = data.launches[selected];
     const handleVideo = () => setVideoOpen(true);
 
     const handleImages = () => setImagesOpen(true);

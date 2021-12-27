@@ -43,12 +43,10 @@ export const QUERY_LAUNCH_LIST = gql`
 
 function App() {
     const {data, error, loading} = useLaunchListQuery();
-    const [selected, setSelected] = useState<string | null | undefined>(null);
+    const [selected, setSelected] = useState<number>(-1);
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
     const theme: Theme = useTheme();
     const isSmallerThanMD = useMediaQuery(theme.breakpoints.down('md'));
-
-    console.log(isSmallerThanMD)
 
     const handleMenuOpen = () => {
         setMenuOpen(true);

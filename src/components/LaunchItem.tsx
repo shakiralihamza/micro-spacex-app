@@ -5,12 +5,14 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 type LaunchItemProps = {
     mission_name: string | null | undefined
     divider: boolean
+    dividerNotVisible: boolean
     selected: boolean
-    setSelected: (selected: any) => void
+    index: number
+    setSelected: (selected: number) => void
 }
-const LaunchItem: FC<LaunchItemProps> = ({mission_name, divider, selected, setSelected}) => {
+const LaunchItem: FC<LaunchItemProps> = ({index, mission_name, divider, dividerNotVisible, selected, setSelected}) => {
     const handleClick = () => {
-        setSelected(mission_name);
+        setSelected(index);
     }
     return (
         <>
@@ -39,10 +41,10 @@ const LaunchItem: FC<LaunchItemProps> = ({mission_name, divider, selected, setSe
                         divider ?
                             <Divider
                                 sx={{
-                                    height: '30px',
+                                    height: selected ? '70px' : '30px',
                                     margin: '10px 0',
                                     width: '50%',
-                                    borderColor: selected ? 'transparent' : null
+                                    borderColor: dividerNotVisible ? 'transparent' : null
                                 }}
                                 orientation={"vertical"}
                                 flexItem

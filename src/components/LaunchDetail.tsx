@@ -111,7 +111,9 @@ const LaunchDetail: FC<LaunchDetailProps> = ({data, selected}) => {
 
             <Typography variant={'body2'} gutterBottom fontSize={14}>
                 <Box component={'span'} sx={{fontWeight: 700}}>Launch Site: </Box>
-                {launchDetail.launch_site.site_name_long}
+                <Box title={'site_name_long'} component={'span'}>
+                    {launchDetail.launch_site.site_name_long}
+                </Box>
             </Typography>
 
             <Typography variant={'body2'} mt={2}>

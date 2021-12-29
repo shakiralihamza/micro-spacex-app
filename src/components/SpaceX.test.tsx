@@ -4,7 +4,7 @@ import SpaceX from "./SpaceX";
 import {MockedProvider} from '@apollo/client/testing';
 import {render, screen} from "@testing-library/react";
 
-const mocks: any = [
+export const mocks: any = [
     {
         request: {
             query: QUERY_LAUNCH_LIST

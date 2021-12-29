@@ -7,6 +7,9 @@ import LaunchDetailLink from "./LaunchDetailLink";
 import LaunchVideo from "./LaunchVideo";
 import LaunchImages from "./LaunchImages";
 import {LaunchListQuery} from "../generated/graphql";
+import {useNavigatorOnline} from "@oieduardorabelo/use-navigator-online";
+import MuiAlert, {AlertProps} from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 type LaunchDetailProps = {
     data: LaunchListQuery | undefined
@@ -37,10 +40,29 @@ function formatTime(date: string) {
     return hours + ':' + minutes + ' ' + ampm;
 }
 
-const LaunchDetail: FC<LaunchDetailProps> = ({data, selected}) => {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
+const LaunchDetail: FC<LaunchDetailProps> = ({data, selected}) => {
+    let {isOnline} = useNavigatorOnline();
     const [videoOpen, setVideoOpen] = React.useState(false);
     const [imagesOpen, setImagesOpen] = React.useState(false);
+    const [alertOpen, setAlertOpen] = React.useState(false);
+
+    const handleAlertOpen = () => {
+        setAlertOpen(true);
+    };
+
+    const handleAlertClose = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setAlertOpen(false);
+    };
 
     if (selected === -1) {
         return null
@@ -48,9 +70,20 @@ const LaunchDetail: FC<LaunchDetailProps> = ({data, selected}) => {
 
     // @ts-ignore
     const launchDetail: any = data.launches[selected];
-    const handleVideo = () => setVideoOpen(true);
+    const handleVideo = () => {
+        if (isOnline) {
+            setVideoOpen(true);
+        } else {
+            handleAlertOpen();
+        }
+    }
 
-    const handleImages = () => setImagesOpen(true);
+    const handleImages = () => {
+        if (!isOnline){
+            setAlertOpen(true);
+        }
+        setImagesOpen(true)
+    };
 
     return (
         <div>
@@ -100,6 +133,12 @@ const LaunchDetail: FC<LaunchDetailProps> = ({data, selected}) => {
 
             <LaunchVideo open={videoOpen} setOpen={setVideoOpen} url={launchDetail.links.video_link}/>
             <LaunchImages open={imagesOpen} setOpen={setImagesOpen} images={launchDetail.links.flickr_images}/>
+            {/*// @ts-ignore*/}
+            <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleAlertClose}>
+                <Alert onClose={handleAlertClose} severity="warning" sx={{ width: '100%' }}>
+                    You're offline!
+                </Alert>
+            </Snackbar>
         </div>
     );
 };

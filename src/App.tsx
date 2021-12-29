@@ -1,23 +1,20 @@
 // noinspection GraphQLUnresolvedReference,JSUnusedGlobalSymbols
+// noinspection GraphQLUnresolvedReference
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    Box,
-    Container,
     CssBaseline,
-    Drawer,
-    Grid,
-    IconButton,
-    useMediaQuery,
-    useTheme
+    Typography,
 } from "@mui/material";
-import {Theme} from "@mui/material";
-import LaunchesList from './components/LaunchesList';
-import LaunchDetail from "./components/LaunchDetail";
+import {
+    ApolloClient,
+    ApolloProvider,
+    NormalizedCacheObject,
+} from '@apollo/client';
+import {InMemoryCache} from '@apollo/client/core';
+import {CachePersistor, LocalStorageWrapper} from 'apollo3-cache-persist';
 import {gql} from "@apollo/client";
-import {useLaunchListQuery} from "./generated/graphql";
-import MenuIcon from '@mui/icons-material/Menu';
-
+import SpaceX from './components/SpaceX';
 
 export const QUERY_LAUNCH_LIST = gql`
     query LaunchList {
@@ -42,83 +39,40 @@ export const QUERY_LAUNCH_LIST = gql`
     }
 `;
 
+
 function App() {
-    const {data, error, loading} = useLaunchListQuery();
-    const [selected, setSelected] = useState<number>(-1);
-    const [menuOpen, setMenuOpen] = useState<boolean>(false);
-    const theme: Theme = useTheme();
-    const isSmallerThanMD = useMediaQuery(theme.breakpoints.down('md'));
+    const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
 
-    const handleMenuOpen = () => {
-        setMenuOpen(true);
-    };
-    const handleMenuClose = () => {
-        setMenuOpen(false);
-    };
+    useEffect(() => {
+        async function init() {
+            const cache = new InMemoryCache();
+            let newPersistor = new CachePersistor({
+                cache,
+                storage: new LocalStorageWrapper(window.localStorage),
+                debug: true,
+                trigger: 'write',
+            });
+            await newPersistor.restore();
+            setClient(
+                new ApolloClient({
+                    uri: 'https://api.spacex.land/graphql/',
+                    cache,
+                }),
+            );
+        }
+
+        init().catch(console.error);
+    }, []);
+
+    if (!client) {
+        return <Typography variant={'h5'} ml={20} mt={10}>...</Typography>;
+    }
+
     return (
-        <>
+        <ApolloProvider client={client}>
             <CssBaseline/>
-            <Container maxWidth={"md"} sx={{height: '100vh'}}>
-                <Grid container sx={{width: '100%', height: '100%'}} alignItems={"center"} justifyContent={"center"}>
-                    <Grid item xs={12} sm={8} md={'auto'} sx={{backgroundColor: 'inherit', margin: '0 20px'}}>
-                        {
-                            loading ?
-                                <p>loading...</p>
-                                : null
-                        }
-                        {
-                            error ?
-                                <p>error</p>
-                                : null
-                        }
-                        {
-                            data ?
-                                <>
-                                    <IconButton
-                                        color="inherit"
-                                        aria-label="open drawer"
-                                        onClick={handleMenuOpen}
-                                        edge="start"
-                                        sx={{mr: 2, ...(!isSmallerThanMD && {display: 'none'})}}
-                                    >
-                                        <MenuIcon/>
-                                    </IconButton>
-                                    {
-                                        isSmallerThanMD ?
-                                            (<Drawer
-                                                anchor={"left"}
-                                                open={menuOpen}
-                                                onClose={handleMenuClose}
-                                                ModalProps={{
-                                                    keepMounted: true,
-                                                }}
-                                            >
-                                                <Box sx={{padding: '40px 40px 0'}}>
-                                                    <LaunchesList data={data} selected={selected}
-                                                                  setSelected={setSelected}/>
-                                                </Box>
-                                            </Drawer>)
-                                            :
-                                            (<LaunchesList data={data} selected={selected}
-                                                           setSelected={setSelected}/>)
-                                    }
-
-                                </>
-                                : null
-                        }
-                    </Grid>
-                    <Grid item xs={11} sm={8} sx={{
-                        backgroundColor: 'inherit',
-                        margin: {
-                            xs: '0',
-                            md: '0 0 0 80px'
-                        }
-                    }}>
-                        <LaunchDetail data={data} selected={selected}/>
-                    </Grid>
-                </Grid>
-            </Container>
-        </>
+            <SpaceX/>
+        </ApolloProvider>
     );
 }
 

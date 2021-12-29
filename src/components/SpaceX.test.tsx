@@ -1,6 +1,6 @@
 import React from 'react';
-import {QUERY_LAUNCH_LIST} from "./App";
-import App from "./App";
+import {QUERY_LAUNCH_LIST} from "../App";
+import SpaceX from "./SpaceX";
 import {MockedProvider} from '@apollo/client/testing';
 import {render, screen} from "@testing-library/react";
 
@@ -129,11 +129,11 @@ const mocks: any = [
 
 const component: JSX.Element = (
     <MockedProvider mocks={mocks} addTypename={false}>
-        <App/>
+        <SpaceX/>
     </MockedProvider>
 );
 
-test('it should show loading... when the App component renders', () => {
+test('it should show loading... when the SpaceX component renders', () => {
     render(component);
     const loadingText = screen.getByText(/loading.../i);
     expect(loadingText).toBeInTheDocument();

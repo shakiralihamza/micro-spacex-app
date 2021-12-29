@@ -3,6 +3,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import {Backdrop} from '@mui/material';
 import {FC} from "react";
+import {useNavigatorOnline} from "@oieduardorabelo/use-navigator-online";
 
 type LaunchImagesProps = {
     open: boolean
@@ -10,6 +11,8 @@ type LaunchImagesProps = {
     images: string[]
 }
 const LaunchImages: FC<LaunchImagesProps> = ({open, setOpen, images}) => {
+    let {isOnline} = useNavigatorOnline();
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -26,7 +29,7 @@ const LaunchImages: FC<LaunchImagesProps> = ({open, setOpen, images}) => {
                             <ImageListItem key={item}>
                                 <img
                                     src={item}
-                                    alt={'loading...'}
+                                    alt={isOnline?'loading...':'...'}
                                     loading="lazy"
                                 />
                             </ImageListItem>

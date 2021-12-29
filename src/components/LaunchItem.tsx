@@ -3,6 +3,7 @@ import {Divider, Grid, Typography} from "@mui/material";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 type LaunchItemProps = {
+    title?: string
     mission_name: string | null | undefined
     divider: boolean
     dividerNotVisible: boolean

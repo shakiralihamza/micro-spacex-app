@@ -138,7 +138,7 @@ const LaunchDetail: FC<LaunchDetailProps> = ({data, selected}) => {
             {/*// @ts-ignore*/}
             <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleAlertClose}>
                 <Alert onClose={handleAlertClose} severity="warning" sx={{ width: '100%' }}>
-                    You're offline!
+                    You are offline!
                 </Alert>
             </Snackbar>
         </div>

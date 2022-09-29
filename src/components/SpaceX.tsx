@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {useLaunchListQuery} from "../generated/graphql";
 import {Box, Container, Drawer, Grid, IconButton, Theme, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -23,49 +23,43 @@ const SpaceX = () => {
             <Grid container sx={{width: '100%', height: '100%'}} alignItems={"center"} justifyContent={"center"}>
                 <Grid item xs={12} sm={8} md={'auto'} sx={{backgroundColor: 'inherit', margin: '0 20px'}}>
                     {
-                        loading ?
-                            <p>loading...</p>
-                            : null
+                        loading && <p>loading...</p>
                     }
                     {
-                        error ?
-                            <p>error</p>
-                            : null
+                        error && <p>error</p>
                     }
                     {
-                        data ?
-                            <>
-                                <IconButton
-                                    color="inherit"
-                                    aria-label="open drawer"
-                                    onClick={handleMenuOpen}
-                                    edge="start"
-                                    sx={{mr: 2, ...(!isSmallerThanMD && {display: 'none'})}}
-                                >
-                                    <MenuIcon/>
-                                </IconButton>
-                                {
-                                    isSmallerThanMD ?
-                                        (<Drawer
-                                            anchor={"left"}
-                                            open={menuOpen}
-                                            onClose={handleMenuClose}
-                                            ModalProps={{
-                                                keepMounted: true,
-                                            }}
-                                        >
-                                            <Box sx={{padding: '40px 40px 0'}}>
-                                                <LaunchesList data={data} selected={selected}
-                                                              setSelected={setSelected}/>
-                                            </Box>
-                                        </Drawer>)
-                                        :
-                                        (<LaunchesList data={data} selected={selected}
-                                                       setSelected={setSelected}/>)
-                                }
-
-                            </>
-                            : null
+                        data &&
+                        <>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleMenuOpen}
+                                edge="start"
+                                sx={{mr: 2, ...(!isSmallerThanMD && {display: 'none'})}}
+                            >
+                                <MenuIcon/>
+                            </IconButton>
+                            {
+                                isSmallerThanMD ?
+                                    (<Drawer
+                                        anchor={"left"}
+                                        open={menuOpen}
+                                        onClose={handleMenuClose}
+                                        ModalProps={{
+                                            keepMounted: true,
+                                        }}
+                                    >
+                                        <Box sx={{padding: '40px 40px 0'}}>
+                                            <LaunchesList data={data} selected={selected}
+                                                          setSelected={setSelected}/>
+                                        </Box>
+                                    </Drawer>)
+                                    :
+                                    (<LaunchesList data={data} selected={selected}
+                                                   setSelected={setSelected}/>)
+                            }
+                        </>
                     }
                 </Grid>
                 <Grid item xs={11} sm={8} sx={{

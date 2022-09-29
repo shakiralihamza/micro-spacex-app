@@ -97,11 +97,10 @@ const LaunchDetail: FC<LaunchDetailProps> = ({data, selected}) => {
             </Typography>
 
             {
-                launchDetail.launch_success ?
+                launchDetail.launch_success &&
                     <Stack direction="row" spacing={1} mb={2}>
                         <Chip label="Success"/>
                     </Stack>
-                    : null
             }
 
             <Typography variant={'body2'} gutterBottom fontSize={14}>

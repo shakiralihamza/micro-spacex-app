@@ -20,6 +20,7 @@ const LaunchVideo: FC<VideoPros> = ({open, setOpen, url}) => {
                 open={open}
                 onClick={handleClose}
             >
+                {/*@ts-ignore*/}
                 <ReactPlayer url={url} controls stopOnUnmount playing={open}/>
             </Backdrop>
         </div>

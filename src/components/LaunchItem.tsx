@@ -34,27 +34,25 @@ const LaunchItem: FC<LaunchItemProps> = ({index, mission_name, divider, dividerN
             >
                 <Grid item>
                     <Typography variant={"button"} fontWeight={700}>
-                        {typeof mission_name === 'string' ? mission_name : null}
+                        {typeof mission_name === 'string' && mission_name}
                     </Typography>
                 </Grid>
                 <Grid item sx={{marginLeft: '30px'}}>
                     <ChevronRightIcon fontSize={'small'} sx={{marginTop: '3px'}}/>
                     {
-                        divider ?
-                            <Divider
-                                sx={{
-                                    height: selected ? '70px' : '30px',
-                                    margin: '10px 0',
-                                    width: '50%',
-                                    borderColor: dividerNotVisible ? 'transparent' : null
-                                }}
-                                orientation={"vertical"}
-                                flexItem
-                                textAlign={'center'}
-                                light
-                            />
-                            :
-                            null
+                        divider &&
+                        <Divider
+                            sx={{
+                                height: selected ? '70px' : '30px',
+                                margin: '10px 0',
+                                width: '50%',
+                                borderColor: dividerNotVisible ? 'transparent' : null
+                            }}
+                            orientation={"vertical"}
+                            flexItem
+                            textAlign={'center'}
+                            light
+                        />
                     }
 
                 </Grid>
